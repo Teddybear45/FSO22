@@ -1,25 +1,25 @@
-import logo from './logo.svg';
-import React, { Fragment } from 'react';
-import './App.css';
+import logo from "./logo.svg";
+import React, { Fragment } from "react";
+import "./App.css";
 
 //init component
 const Greeting = (props) => (
   <div>
-    <h1>hello</h1>
     <p>props name greet: {props.name}</p>
-
+    <p>props age: {props.age}</p>
   </div>
-)
+);
 
+const App = () => {
+  const name = "Peter";
+  const age = 10;
 
-
-
-const App = () => (
-  <Fragment>
-    <Greeting name="aaron"/>
-    <Greeting name="george"/>
-
-  </Fragment>
-)
+  return (
+    <Fragment>
+      <Greeting name={name} age={age} />
+      <Greeting name="george" age={20} />
+    </Fragment>
+  );
+};
 
 export default App;

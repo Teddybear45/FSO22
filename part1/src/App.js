@@ -1,24 +1,29 @@
 import logo from "./logo.svg";
-import React, { Fragment } from "react";
+import React, { Fragment, useState } from "react";
 import "./App.css";
 
-//init component
-const Greeting = (props) => (
-  <div>
-    <p>props name greet: {props.name}</p>
-    <p>props age: {props.age}</p>
-  </div>
-);
+const Button = (props) => {
+  return <button onClick={props.onClick}>{props.text}</button>;
+};
+
+const Display = (props) => {
+  return <div>{props.counter}</div>;
+};
 
 const App = () => {
-  const name = "Peter";
-  const age = 10;
+  const [counter, setCounter] = useState(0);
+
+  const increaseByOne = () => setCounter(counter + 1);
+  const decreaseByOne = () => setCounter(counter - 1);
+  const setToZero = () => setCounter(0);
 
   return (
-    <Fragment>
-      <Greeting name={name} age={age} />
-      <Greeting name="george" age={20} />
-    </Fragment>
+    <div>
+      <Display counter={counter} />
+      <Button onClick={increaseByOne} text="plus" />
+      <Button onClick={setToZero} text="zero" />
+      <Button onClick={decreaseByOne} text="minus" />
+    </div>
   );
 };
 

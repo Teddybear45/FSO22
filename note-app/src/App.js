@@ -1,5 +1,7 @@
 import logo from "./logo.svg";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+
+import axios from "axios";
 
 import "./App.css";
 
@@ -8,8 +10,18 @@ import Note from "./components/Notes";
 function App(props) {
   const [notes, setNotes] = useState(props.notes);
   const [newNote, setNewNote] = useState("a new note...");
-  const [showAll, setShowAll] = useState(true)
+  const [showAll, setShowAll] = useState(true);
 
+  const hook = () => {
+    console.log("effect");
+    axios.get("http://localhost:3001/notes").then((response) => {
+      console.log("promise fulfilled");
+      setNotes(response.data);
+    });
+  };
+
+  useEffect(hook, []);
+  console.log("render", notes.length, "notes");
 
   const addNote = (event) => {
     event.preventDefault();
@@ -30,10 +42,9 @@ function App(props) {
     setNewNote(event.target.value);
   };
 
-
   const notesToShow = showAll
     ? notes
-    : notes.filter(note => note.important === true)
+    : notes.filter((note) => note.important === true);
 
   return (
     <div>
@@ -42,7 +53,7 @@ function App(props) {
 
       <div>
         <button onClick={() => setShowAll(!showAll)}>
-          show {showAll ? 'important' : 'all' }
+          show {showAll ? "important" : "all"}
         </button>
       </div>
 

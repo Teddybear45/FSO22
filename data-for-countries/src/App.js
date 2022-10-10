@@ -28,11 +28,20 @@ function App() {
         c.name.common.toLowerCase().includes(findCountry.toLowerCase())
       )
     );
-    // if (findCountry === "") {
-    //   setFilteredCountries(countries);
-    // }
 
     console.log(filteredCountries);
+  };
+
+  const setFilteredCountry = (event) => {
+    console.log(event);
+    console.log(event.target.value);
+    setFindCountry(event.target.value);
+    console.log(findCountry);
+    const cf = countries.filter((c) =>
+      c.name.common.toLowerCase().includes(event.target.value.toLowerCase())
+    );
+
+    setFilteredCountries(cf);
   };
 
   return (
@@ -41,7 +50,10 @@ function App() {
         find countries:{" "}
         <input onChange={handleFindCountryChange} value={findCountry} />
       </p>
-      <CountriesList countries={filteredCountries} />
+      <CountriesList
+        countries={filteredCountries}
+        setFilteredCountry={setFilteredCountry}
+      />
     </>
   );
 }

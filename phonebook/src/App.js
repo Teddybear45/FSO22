@@ -1,14 +1,21 @@
 import logo from "./logo.svg";
 import "./App.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+
+import phonebookService from "./services/phonebook";
 
 function App() {
-  const [persons, setPersons] = useState([
-    { name: "Arto Hellas", number: 123456 },
-  ]);
+  const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [filter, setFilter] = useState("");
+
+  const hook = () => {
+    phonebookService.getAll().then((res) => {
+      setPersons(res);
+    });
+  };
+  useEffect(hook, []);
 
   const handleNameChange = (event) => {
     event.preventDefault();
@@ -27,9 +34,12 @@ function App() {
         name: newName,
         number: newNumber,
       };
-      setNewName("");
-      setNewNumber("");
-      setPersons(persons.concat(newPerson));
+
+      phonebookService.create(newPerson).then((res) => {
+        setNewName("");
+        setNewNumber("");
+        setPersons(persons.concat(res));
+      });
     }
   };
 
@@ -48,6 +58,21 @@ function App() {
   const personsToShow = persons.filter((person) =>
     person.name.includes(filter)
   );
+
+  const handleDelete = (event) => {
+    console.log(event.target);
+    phonebookService.remove(event.target.value);
+
+    // RACE CONDITION NEED TO FIX ****************
+    //todo fix. latency. not right method
+    phonebookService.getAll().then((res) => {
+      setPersons(res);
+    });
+    
+  };
+  
+  // todo create update(put) method
+
 
   return (
     <div>
@@ -72,7 +97,10 @@ function App() {
       <ul>
         {personsToShow.map((person) => (
           <li key={person.name}>
-            {person.name}: {person.number}
+            {person.name}: {person.number}{" "}
+            <button onClick={handleDelete} value={person.id}>
+              delete
+            </button>
           </li>
         ))}
       </ul>

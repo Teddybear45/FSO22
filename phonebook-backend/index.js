@@ -1,5 +1,5 @@
 const express = require("express");
-const bodyParser = require('body-parser')
+const bodyParser = require("body-parser");
 const app = express();
 
 let persons = [
@@ -25,8 +25,7 @@ let persons = [
   },
 ];
 
-app.use(bodyParser.json())
-
+app.use(bodyParser.json());
 
 app.get("/info", (request, response) => {
   response.send(
@@ -60,16 +59,24 @@ app.post("/api/persons", (request, response) => {
   console.log(body);
   const newId = parseInt(Math.random() * 999_999);
 
-  // if (!body.name || !body.number) {
-  //   return response.status(400).json({
-  //     error: "content missing",
-  //   });
-  // }
+  if (!body.name || !body.number) {
+    return response.status(400).json({
+      error: "content missing",
+    });
+  }
+  if (
+    persons.find((p) => p.name === body.name) ||
+    persons.find((p) => p.number === body.number)
+  ) {
+    return response
+      .status(400)
+      .json({ error: "name or number already exists" });
+  }
 
   const person = {
     name: body.name,
     number: body.number,
-    id: newId
+    id: newId,
   };
 
   persons = persons.concat(person);

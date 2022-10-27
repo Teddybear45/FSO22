@@ -26,6 +26,14 @@ let persons = [
 ];
 
 app.use(bodyParser.json());
+const requestLogger = (request, response, next) => {
+  console.log("Method:", request.method);
+  console.log("Path:  ", request.path);
+  console.log("Body:  ", request.body);
+  console.log("---");
+  next();
+};
+app.use(requestLogger); // todo implement morgan logger
 
 app.get("/info", (request, response) => {
   response.send(
@@ -83,6 +91,12 @@ app.post("/api/persons", (request, response) => {
 
   response.json(person);
 });
+
+const unknownEndpoint = (request, response) => {
+  response.status(404).send({ error: "unknown endpoint" });
+};
+
+app.use(unknownEndpoint);
 
 const PORT = 3001;
 app.listen(PORT);

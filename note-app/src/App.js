@@ -36,11 +36,17 @@ function App(props) {
       id: notes.length + 1,
     };
 
-    // todo: get rid of this axios request for a service
-    axios.post("http://localhost:3001/notes", noteObject).then((res) => {
+    // UNTESTED !!
+    noteService.create(noteObject).then(res => {
       setNotes(notes.concat(noteObject));
       setNewNote("");
-    });
+    })
+
+    // todo: get rid of this axios request for a service
+    // axios.post("/api/notes", noteObject).then((res) => {
+    //   setNotes(notes.concat(noteObject));
+    //   setNewNote("");
+    // });
   };
   const handleNoteChange = (event) => {
     console.log(event.target.value);

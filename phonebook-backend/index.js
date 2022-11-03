@@ -1,5 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+const cors = require("cors");
 const app = express();
 
 let persons = [
@@ -24,6 +25,10 @@ let persons = [
     number: "39-23-6423122",
   },
 ];
+
+app.use(cors());
+
+app.use(express.static("build"));
 
 app.use(bodyParser.json());
 const requestLogger = (request, response, next) => {

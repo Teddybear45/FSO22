@@ -28,6 +28,7 @@ function App(props) {
   const addNote = (event) => {
     event.preventDefault();
     console.log("button clicked", event.target);
+    
 
     const noteObject = {
       content: newNote,
@@ -35,8 +36,10 @@ function App(props) {
       important: Math.random() < 0.5,
     };
 
+    console.log(noteObject);
     // UNTESTED !!
     noteService.create(noteObject).then(res => {
+      console.log("send req promise ful" + res);
       setNotes(notes.concat(res));
       setNewNote("");
     })
